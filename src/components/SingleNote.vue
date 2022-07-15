@@ -16,10 +16,13 @@ export default {
     title: String,
     content: String,
     id: Number,
-    onDelete: Function,
   },
-  methods: {},
-};
+  methods: {
+    onDelete(){
+      const id = this.id
+      return this.$store.dispatch("deleteNoteAction", {id})
+    },
+  }};
 </script>
 
 <style scoped>

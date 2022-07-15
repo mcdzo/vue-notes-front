@@ -1,11 +1,11 @@
 <template>
   <div>
     <HeaderComponent />
-    <NewNoteForm v-if="toggleNewNote" :onNewNote="onNewNote" />
+    <NewNoteForm v-if="toggleNewNote"/>
     <div class="new-note-section">
       <button
         class="open-form-button"
-        v-on:click="newNote()"
+        v-on:click="newNote"
         v-if="!toggleNewNote"
       >
         Nueva Nota
@@ -19,7 +19,7 @@
       </button>
     </div>
 
-    <Notes v-if="notes.length !== 0" :notes="notes" :onDelete="onDelete" />
+    <Notes v-if="notes.length !== 0"/>
     <div class="empty-msg" v-if="notes.length === 0">
       Aun no hay notas por mostrar. Agrega una!
     </div>
@@ -30,47 +30,44 @@
 import HeaderComponent from "../components/HeaderComponent.vue";
 import NewNoteForm from "../components/NewNoteForm.vue";
 import Notes from "../components/Notes.vue";
+import getAllNotes from "../service/Notes/getAllNotes.js"
 
 export default {
   name: "HomePage",
   data() {
     return {
       toggleNewNote: false,
-      notes: [],
     };
+  },/*te podes traer las notas del store como prop compudata*/
+  computed: {
+    notes() {
+      return this.$store.state.notes;
+    },
   },
   components: {
     HeaderComponent,
     NewNoteForm,
     Notes,
   },
+
   created() {
-    this.notes = [];
+    getAllNotes().then(res => {
+      this.getNotes(res.data)
+      console.log(res.data)
+    })
+    
   },
 
   methods: {
     newNote() {
       this.toggleNewNote = !this.toggleNewNote;
     },
-    onNewNote(title, content) {
-      if (title === "" && content === "") {
-        alert("No se puede agregar una nota vacía");
-      } else {
-        const id = parseInt(Math.random() * (1000 - 1) + 1);
-        const newNote = {
-          id: id,
-          title: title,
-          content: content,
-        };
-        this.notes.push(newNote);
-      }
+   onNewNote() {
+      return this.$store.commit("onNewNote");
     },
-    onDelete(id) {
-      const newNotes = this.notes.filter((note) => note.id !== id);
-
-      this.notes = newNotes;
-      return this.notes;
-    },
+    getNotes(notes) {      
+      return this.$store.commit("getAllNotes", {notes})
+    }
   },
 };
 </script>

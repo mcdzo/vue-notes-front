@@ -17,11 +17,19 @@ import SingleNote from "./SingleNote.vue";
 export default {
   name: "NotesContainer",
   props: {
-    notes: Array,
     onDelete: Function,
+  },
+  computed: {
+    notes(){ 
+      return this.$store.state.notes
+    }
   },
   components: {
     SingleNote,
+  },
+  created(){
+   console.log(this.$store.state.notes)
+    
   },
 };
 </script>

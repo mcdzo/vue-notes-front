@@ -1,6 +1,6 @@
 <template>
   <section class="form-section">
-    <form class="form" v-on:submit.prevent="onNewNote(title, content)">
+    <form class="form" v-on:submit.prevent="onNewNote">
       <div class="input-section">
         <label>Titulo de la nota: </label>
         <input type="text" v-model="title" />
@@ -25,11 +25,15 @@ export default {
       content: "",
     };
   },
-  props: {
-    onNewNote: {
-      type: Function,
-    },
-  },
+  methods:{
+    onNewNote(){
+      const title = this.title
+      const content = this.content
+
+      console.log("desde form: ", title, content)
+      return this.$store.dispatch("newNoteAction", {title, content})
+    }
+  }
 };
 </script>
 

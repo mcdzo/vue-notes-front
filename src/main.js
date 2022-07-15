@@ -3,6 +3,8 @@ import App from "./App.vue";
 import VueRouter from "vue-router";
 import HomePage from "../src/pages/HomePage.vue";
 import LoginPage from "../src/pages/LoginPage.vue";
+import {store} from "./store/store";
+import RegisterPage from "../src/pages/RegisterPage.vue"
 
 Vue.config.productionTip = false;
 
@@ -21,6 +23,10 @@ const routes = [
     path: "/login",
     component: LoginPage,
   },
+  {
+    path: "/register",
+    component: RegisterPage
+  },
 ];
 
 const router = new VueRouter({
@@ -29,6 +35,7 @@ const router = new VueRouter({
 });
 
 new Vue({
+  store: store,
   router,
   render: (h) => h(App),
 }).$mount("#app");
